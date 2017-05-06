@@ -34,7 +34,7 @@ dependencies {
     compile 'org.sufficientlysecure:openpgp-api:10.0'
     compile 'com.soundcloud.android:android-crop:1.0.1@aar'
     compile "com.android.support:appcompat-v7:${supportLibVersion}"
-    compile "com.android.support:preference-v7:${supportLibVersion}"
+    compile "com.android.support:preference-v14:${supportLibVersion}"
     compile "com.android.support:support-v13:${supportLibVersion}"
     compile "com.android.support:design:${supportLibVersion}"
     compile 'org.bouncycastle:bcprov-jdk15on:1.52'
