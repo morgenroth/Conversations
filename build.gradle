@@ -63,6 +63,12 @@ android {
         applicationId "eu.siacs.conversations"
     }
 
+    buildTypes {
+        debug {
+            applicationIdSuffix ".debug"
+        }
+    }
+
     dexOptions {
         // Skip pre-dexing when running on Travis CI or when disabled via -Dpre-dex=false.
         preDexLibraries = preDexEnabled && !travisBuild
