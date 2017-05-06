@@ -1,10 +1,16 @@
 package eu.siacs.conversations.ui;
 
 import android.app.Dialog;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceCategory;
 import android.support.v7.preference.PreferenceFragmentCompat;
+import android.support.v7.preference.PreferenceManager;
 import android.support.v7.preference.PreferenceScreen;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +22,9 @@ import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
+
+	private static final int REQUEST_CODE_NOTIFICATION_RINGTONE = 1;
+	private static final String KEY_NOTIFICATION_RINGTONE = "notification_ringtone";
 
 	/*
 	//http://stackoverflow.com/questions/16374820/action-bar-home-button-not-functional-with-nested-preferencescreen/16800527#16800527
@@ -76,6 +85,61 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 		return false;
 	}
 	*/
+
+	private String getRingtonePreferenceValue() {
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+		return prefs.getString(KEY_NOTIFICATION_RINGTONE,
+				"content://settings/system/notification_sound");
+	};
+
+	private void setRingtonPreferenceValue(String value) {
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+		prefs.edit().putString(KEY_NOTIFICATION_RINGTONE, value);
+	};
+
+	@Override
+	public boolean onPreferenceTreeClick(Preference preference) {
+		if (KEY_NOTIFICATION_RINGTONE.equals(preference.getKey())) {
+			Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
+			intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION);
+			intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_DEFAULT, true);
+			intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_SILENT, true);
+			intent.putExtra(RingtoneManager.EXTRA_RINGTONE_DEFAULT_URI, Settings.System.DEFAULT_NOTIFICATION_URI);
+
+			String existingValue = getRingtonePreferenceValue(); // TODO
+			if (existingValue != null) {
+				if (existingValue.length() == 0) {
+					// Select "Silent"
+					intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, (Uri) null);
+				} else {
+					intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, Uri.parse(existingValue));
+				}
+			} else {
+				// No ringtone has been selected, set to the default
+				intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, Settings.System.DEFAULT_NOTIFICATION_URI);
+			}
+
+			startActivityForResult(intent, REQUEST_CODE_NOTIFICATION_RINGTONE);
+			return true;
+		} else {
+			return super.onPreferenceTreeClick(preference);
+		}
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == REQUEST_CODE_NOTIFICATION_RINGTONE && data != null) {
+			Uri ringtone = data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
+			if (ringtone != null) {
+				setRingtonPreferenceValue(ringtone.toString()); // TODO
+			} else {
+				// "Silent" was selected
+				setRingtonPreferenceValue(""); // TODO
+			}
+		} else {
+			super.onActivityResult(requestCode, resultCode, data);
+		}
+	}
 
 	@Override
 	public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {

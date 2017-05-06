@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/action_search"
-        android:actionLayout="@layout/actionview_search"
+        compat:actionLayout="@layout/actionview_search"
         android:icon="?attr/icon_search"
         compat:showAsAction="collapseActionView|always"
         android:title="@string/search"/>

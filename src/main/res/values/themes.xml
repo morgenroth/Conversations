@@ -2,7 +2,7 @@
 <resources>
 
     <style name="ConversationsTheme" parent="@style/Theme.AppCompat.Light.DarkActionBar">
-        <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
 
         <item name="colorPrimary">@color/primary500</item>
         <item name="colorPrimaryDark">@color/primary700</item>
@@ -82,7 +82,7 @@
     </style>
 
     <style name="ConversationsTheme.Dark" parent="@style/Theme.AppCompat">
-        <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
 
         <item name="colorPrimary">@color/primary800</item>
         <item name="colorPrimaryDark">@color/primary900</item>
