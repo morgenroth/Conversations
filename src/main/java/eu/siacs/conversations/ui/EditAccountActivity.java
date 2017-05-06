@@ -1,6 +1,6 @@
 package eu.siacs.conversations.ui;
 
-import android.app.ActionBar;
+import android.support.v7.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.PendingIntent;
@@ -624,12 +624,12 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 			this.messageFingerprint = getIntent().getStringExtra("fingerprint");
 			if (!mInitMode) {
 				this.mRegisterNew.setVisibility(View.GONE);
-				if (getActionBar() != null) {
-					getActionBar().setTitle(getString(R.string.account_details));
+				if (getSupportActionBar() != null) {
+					getSupportActionBar().setTitle(getString(R.string.account_details));
 				}
 			} else {
 				this.mAvatar.setVisibility(View.GONE);
-				ActionBar ab = getActionBar();
+				ActionBar ab = getSupportActionBar();
 				if (ab != null) {
 					if (init && Config.MAGIC_CREATE_DOMAIN == null) {
 						ab.setDisplayShowHomeEnabled(false);

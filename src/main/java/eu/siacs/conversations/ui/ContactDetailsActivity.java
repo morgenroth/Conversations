@@ -9,7 +9,7 @@ import android.content.IntentSender.SendIntentException;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
+import android.support.v7.preference.PreferenceManager;
 import android.provider.ContactsContract.CommonDataKinds;
 import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.Intents;
@@ -226,9 +226,9 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
 		keysWrapper = (LinearLayout) findViewById(R.id.keys_wrapper);
 		tags = (FlowLayout) findViewById(R.id.tags);
 		mShowInactiveDevicesButton = (Button) findViewById(R.id.show_inactive_devices);
-		if (getActionBar() != null) {
-			getActionBar().setHomeButtonEnabled(true);
-			getActionBar().setDisplayHomeAsUpEnabled(true);
+		if (getSupportActionBar() != null) {
+			getSupportActionBar().setHomeButtonEnabled(true);
+			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		}
 		mShowInactiveDevicesButton.setOnClickListener(new OnClickListener() {
 			@Override

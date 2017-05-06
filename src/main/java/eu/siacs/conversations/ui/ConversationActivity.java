@@ -1,7 +1,8 @@
 package eu.siacs.conversations.ui;
 
 import android.annotation.SuppressLint;
-import android.app.ActionBar;
+import android.annotation.TargetApi;
+import android.support.v7.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
 import android.app.PendingIntent;
@@ -18,6 +19,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.provider.Settings;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SlidingPaneLayout;
 import android.support.v4.widget.SlidingPaneLayout.PanelSlideListener;
 import android.util.Log;
@@ -115,6 +117,7 @@ public class ConversationActivity extends XmppActivity
 	private Conversation swipedConversation = null;
 	private Conversation mSelectedConversation = null;
 	private EnhancedListView listView;
+	private FloatingActionButton newConversationButton;
 	private ConversationFragment mConversationFragment;
 
 	private ArrayAdapter<Conversation> listAdapter;
@@ -203,7 +206,10 @@ public class ConversationActivity extends XmppActivity
 		this.listAdapter = new ConversationAdapter(this, conversationList);
 		listView.setAdapter(this.listAdapter);
 
-		final ActionBar actionBar = getActionBar();
+		newConversationButton = (FloatingActionButton) findViewById(R.id.new_conversation);
+		newConversationButton.setOnClickListener(mFloatingActionButtonListener);
+
+		final ActionBar actionBar = getSupportActionBar();
 		if (actionBar != null) {
 			actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_TITLE);
 		}
@@ -252,6 +258,7 @@ public class ConversationActivity extends XmppActivity
 
 				return new EnhancedListView.Undoable() {
 
+					@TargetApi(Build.VERSION_CODES.LOLLIPOP)
 					@Override
 					public void undo() {
 						listAdapter.insert(swipedConversation, position);
@@ -347,7 +354,7 @@ public class ConversationActivity extends XmppActivity
 	}
 
 	private void updateActionBarTitle(boolean titleShouldBeName) {
-		final ActionBar ab = getActionBar();
+		final ActionBar ab = getSupportActionBar();
 		final Conversation conversation = getSelectedConversation();
 		if (ab != null) {
 			if (titleShouldBeName && conversation != null) {
@@ -394,7 +401,6 @@ public class ConversationActivity extends XmppActivity
 		final MenuItem menuContactDetails = menu.findItem(R.id.action_contact_details);
 		final MenuItem menuAttach = menu.findItem(R.id.action_attach_file);
 		final MenuItem menuClearHistory = menu.findItem(R.id.action_clear_history);
-		final MenuItem menuAdd = menu.findItem(R.id.action_add);
 		final MenuItem menuInviteContact = menu.findItem(R.id.action_invite);
 		final MenuItem menuMute = menu.findItem(R.id.action_mute);
 		final MenuItem menuUnmute = menu.findItem(R.id.action_unmute);
@@ -410,14 +416,9 @@ public class ConversationActivity extends XmppActivity
 			menuMute.setVisible(false);
 			menuUnmute.setVisible(false);
 		} else {
-			menuAdd.setVisible(!isConversationsOverviewHideable());
 			if (this.getSelectedConversation() != null) {
 				if (this.getSelectedConversation().getNextEncryption() != Message.ENCRYPTION_NONE) {
-					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-						menuSecure.setIcon(R.drawable.ic_lock_white_24dp);
-					} else {
-						menuSecure.setIcon(R.drawable.ic_action_secure);
-					}
+					menuSecure.setIcon(R.drawable.ic_lock_white_24dp);
 				}
 				if (this.getSelectedConversation().getMode() == Conversation.MODE_MULTI) {
 					menuContactDetails.setVisible(false);
@@ -667,13 +668,17 @@ public class ConversationActivity extends XmppActivity
 		}
 	}
 
+	public final View.OnClickListener mFloatingActionButtonListener = new View.OnClickListener() {
+		@Override
+		public void onClick(View view) {
+			startActivity(new Intent(getApplicationContext(), StartConversationActivity.class));
+		}
+	};
+
 	@Override
 	public boolean onOptionsItemSelected(final MenuItem item) {
 		if (item.getItemId() == android.R.id.home) {
 			showConversationsOverview();
-			return true;
-		} else if (item.getItemId() == R.id.action_add) {
-			startActivity(new Intent(this, StartConversationActivity.class));
 			return true;
 		} else if (getSelectedConversation() != null) {
 			switch (item.getItemId()) {

@@ -2,10 +2,10 @@ package eu.siacs.conversations.ui;
 
 import android.app.Dialog;
 import android.os.Bundle;
-import android.preference.Preference;
-import android.preference.PreferenceCategory;
-import android.preference.PreferenceFragment;
-import android.preference.PreferenceScreen;
+import android.support.v7.preference.Preference;
+import android.support.v7.preference.PreferenceCategory;
+import android.support.v7.preference.PreferenceFragmentCompat;
+import android.support.v7.preference.PreferenceScreen;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -15,8 +15,9 @@ import android.widget.LinearLayout;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 
-public class SettingsFragment extends PreferenceFragment {
+public class SettingsFragment extends PreferenceFragmentCompat {
 
+	/*
 	//http://stackoverflow.com/questions/16374820/action-bar-home-button-not-functional-with-nested-preferencescreen/16800527#16800527
 	private void initializeActionBar(PreferenceScreen preferenceScreen) {
 		final Dialog dialog = preferenceScreen.getDialog();
@@ -73,5 +74,21 @@ public class SettingsFragment extends PreferenceFragment {
 			initializeActionBar((PreferenceScreen) preference);
 		}
 		return false;
+	}
+	*/
+
+	@Override
+	public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+		// Load the preferences from an XML resource
+		addPreferencesFromResource(R.xml.preferences);
+
+		// Remove from standard preferences if the flag ONLY_INTERNAL_STORAGE is not true
+		if (!Config.ONLY_INTERNAL_STORAGE) {
+			PreferenceCategory mCategory = (PreferenceCategory) findPreference("security_options");
+			Preference mPref1 = findPreference("clean_cache");
+			Preference mPref2 = findPreference("clean_private_storage");
+			mCategory.removePreference(mPref1);
+			mCategory.removePreference(mPref2);
+		}
 	}
 }

@@ -2,8 +2,8 @@ package eu.siacs.conversations.ui;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.preference.DialogPreference;
-import android.preference.Preference;
+import android.support.v7.preference.DialogPreference;
+import android.support.v7.preference.Preference;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TimePicker;
@@ -33,6 +33,7 @@ public class TimePreference extends DialogPreference implements Preference.OnPre
 		setSummary(dateFormat.format(date.getTime()));
 	}
 
+	/*
 	@Override
 	protected View onCreateDialogView() {
 		picker = new TimePicker(getContext());
@@ -74,6 +75,7 @@ public class TimePreference extends DialogPreference implements Preference.OnPre
 			setTime(c.getTimeInMillis());
 		}
 	}
+	*/
 
 	@Override
 	protected Object onGetDefaultValue(final TypedArray a, final int index) {

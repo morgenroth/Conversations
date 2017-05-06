@@ -1,6 +1,6 @@
 package eu.siacs.conversations.ui;
 
-import android.app.ActionBar;
+import android.support.v7.app.ActionBar;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -31,7 +31,7 @@ public class WelcomeActivity extends XmppActivity {
 		}
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.welcome);
-		final ActionBar ab = getActionBar();
+		final ActionBar ab = getSupportActionBar();
 		if (ab != null) {
 			ab.setDisplayShowHomeEnabled(false);
 			ab.setDisplayHomeAsUpEnabled(false);

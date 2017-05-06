@@ -1,6 +1,6 @@
 package eu.siacs.conversations.ui;
 
-import android.app.ActionBar;
+import android.support.v7.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -104,9 +104,9 @@ public class TrustKeysActivity extends OmemoActivity implements OnKeyStatusUpdat
 		mSaveButton.setOnClickListener(mSaveButtonListener);
 
 
-		if (getActionBar() != null) {
-			getActionBar().setHomeButtonEnabled(true);
-			getActionBar().setDisplayHomeAsUpEnabled(true);
+		if (getSupportActionBar() != null) {
+			getSupportActionBar().setHomeButtonEnabled(true);
+			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		}
 	}
 
@@ -114,7 +114,7 @@ public class TrustKeysActivity extends OmemoActivity implements OnKeyStatusUpdat
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.trust_keys, menu);
 		mUseCameraHintToast = Toast.makeText(this,R.string.use_camera_icon_to_scan_barcode,Toast.LENGTH_LONG);
-		ActionBar actionBar = getActionBar();
+		ActionBar actionBar = getSupportActionBar();
 		mUseCameraHintToast.setGravity(Gravity.TOP | Gravity.END, 0 ,actionBar == null ? 0 : actionBar.getHeight());
 		mUseCameraHintToast.show();
 		return super.onCreateOptionsMenu(menu);

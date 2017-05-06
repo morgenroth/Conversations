@@ -2,7 +2,7 @@ package eu.siacs.conversations.ui;
 
 import android.content.Context;
 import android.content.Intent;
-import android.preference.Preference;
+import android.support.v7.preference.Preference;
 import android.util.AttributeSet;
 
 import eu.siacs.conversations.utils.PhoneHelper;
